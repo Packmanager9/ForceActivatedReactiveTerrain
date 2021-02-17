@@ -918,7 +918,15 @@ window.addEventListener('DOMContentLoaded', (event) => {
     floors[80].width = 12
     floors[1200].width = 12
 
+    let radical = new Point(floors[80].x, floors[80].y)
+    let link = new LineOP(floors[80], radical, "yellow", 3)
+
+    let firerate = 100
+    let firing = 0
+
+
     function main() {
+        firing++
         canvas_context.clearRect(0, 0, canvas.width, canvas.height)  // refreshes the image
         gamepadAPI.update() //checks for button presses/stick movement on the connected controller)
         // game code goes here
@@ -938,7 +946,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
                         for (let n = k - 16; n < (k + 16); n++) {
                             if (k > 16 && k < floors.length - 17) {
                                 value += (Math.PI / 32)
-                                floors[n].waggle += (circs[t].ymom * Math.sin(value)) /2
+                                floors[n].waggle += (circs[t].ymom * Math.sin(value)) 
                                 circs[t].marked = 1
                             }
                         }
@@ -948,6 +956,19 @@ window.addEventListener('DOMContentLoaded', (event) => {
         }
 
         floors[80].draw()
+        control(radical)
+        if(keysPressed[' ']){
+            if(firing>firerate){
+
+                let circ = new Circle(radical.x, radical.y, 5, "white", (radical.x-floors[80].x)/10,  (radical.y-floors[80].y)/10)
+                circs.push(circ)
+                firing = 0
+            }
+        }
+
+
+
+        link.draw()
         floors[1200].draw()
     }
 })
